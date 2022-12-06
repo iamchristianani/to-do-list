@@ -1,37 +1,57 @@
-const allList = document.querySelector('.all-list');
+import { allList, inputList } from "./variableList.js";
 
-const tasksArr = [
-  {
-    description: 'Dance with a girl',
-    completed: false,
-    index: 1,
-  },
-  {
-    description: 'Go to the movies',
-    completed: false,
-    index: 2,
-  },
-  {
-    description: 'Get home early',
-    completed: false,
-    index: 3,
-  },
-  {
-    description: 'Wake up late',
-    completed: false,
-    index: 4,
-  },
-];
+let tasksArr = [];
 
 const ShowList = () => {
+  allList.innerHTML = '';
   tasksArr.forEach((task) => {
-    const oneTask = `<li class="each-list all-box">
-    <input class="input-check" type="checkbox"/>
-    <span class="input-text">${task.description}</span>
-    <i class="fa-solid fa-ellipsis-vertical list-icon"></i>
-  </li>`;
-    allList.innerHTML += oneTask;
+    const oneTask = document.createElement('li');
+    oneTask.classList = 'each-list all-box';
+    oneTask.innerHTML = `
+      <input class="input-check" type="checkbox"/>
+      <span class="input-text">${task.description}</span>
+      <i data-id="${task.index}" class="fa-solid fa-trash list-icon" id="delete-btn"></i>
+    `;
+    allList.appendChild(oneTask);
+    inputList.value = '';
+  });
+  
+  const removeListBtn = document.querySelectorAll('#delete-btn');
+  removeListBtn.forEach((button) => {
+    button.addEventListener('click', () => {
+      const dataSet = parseInt(button.dataset.id, 10);
+      const buttonId = tasksArr.findIndex((object) => object.index === dataSet);
+      // eslint-disable-next-line no-use-before-define
+      removeList(buttonId);
+    });
   });
 };
 
-export default ShowList;
+const addList = () => {
+  const eachList = {};
+  eachList.description = inputList.value;
+  eachList.completed = false;
+  eachList.index = tasksArr.length;
+  tasksArr.push(eachList);
+  ShowList();
+  const jsonData = JSON.stringify(tasksArr);
+  localStorage.setItem('lists', jsonData);
+}
+
+const removeList = (index) => {
+  tasksArr.splice(index, 1);
+  ShowList();
+  const jsonData = JSON.stringify(tasksArr);
+  localStorage.setItem('lists', jsonData);
+};
+
+const displayList = () => {
+  const getJsonData = localStorage.getItem('lists');
+
+  if (getJsonData) {
+    tasksArr = JSON.parse(getJsonData);
+  }
+  ShowList();
+};
+
+export {displayList, addList};
