@@ -2,11 +2,13 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
-input:focus{
+input:focus {
   outline: none;
 }
 
@@ -15,7 +17,6 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: gray;
-  
 }
 
 section {
@@ -83,12 +84,15 @@ section {
 ::-webkit-input-placeholder {
   font-style: italic;
 }
-:-moz-placeholder {
-  font-style: italic;  
-}
+
 ::-moz-placeholder {
-  font-style: italic;  
+  font-style: italic;
 }
-:-ms-input-placeholder {  
-  font-style: italic; 
+
+:-moz-placeholder {
+  font-style: italic;
+}
+
+:-ms-input-placeholder {
+  font-style: italic;
 }

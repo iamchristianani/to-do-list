@@ -2,37 +2,36 @@ const allList = document.querySelector('.all-list');
 
 const tasksArr = [
   {
-    description: "Dance with a girl",
+    description: 'Dance with a girl',
     completed: false,
-    index: 1
+    index: 1,
   },
   {
-    description: "Go to the movies",
+    description: 'Go to the movies',
     completed: false,
-    index: 2
+    index: 2,
   },
   {
-    description: "Get home early",
+    description: 'Get home early',
     completed: false,
-    index: 3
+    index: 3,
   },
   {
-    description: "Wake up late",
+    description: 'Wake up late',
     completed: false,
-    index: 4
+    index: 4,
   },
 ];
 
-
-const showList = () => {
+const ShowList = () => {
   tasksArr.forEach((task) => {
     const oneTask = `<li class="each-list all-box">
     <input class="input-check" type="checkbox"/>
     <span class="input-text">${task.description}</span>
     <i class="fa-solid fa-ellipsis-vertical list-icon"></i>
   </li>`;
-  allList.innerHTML += oneTask;
+    allList.innerHTML += oneTask;
   });
-}
+};
 
-export {showList};
+export default ShowList;
