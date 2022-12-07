@@ -1,6 +1,13 @@
 import './css/style.css';
-import ShowList from './modules/showTask.js';
+import { inputList } from './modules/variableList.js';
+import { displayList, addList } from './modules/showTask.js';
 
 window.addEventListener('load', () => {
-  ShowList();
+  displayList();
+});
+
+inputList.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    addList();
+  }
 });
