@@ -9,7 +9,7 @@ const ShowList = () => {
     oneTask.classList = 'each-list all-box';
     oneTask.innerHTML = `
       <input class="input-check" type="checkbox"/>
-      <span class="input-text">${task.description}</span>
+      <input data-id="${task.index}" type="text" id="input-text" class="input-text" value="${task.description}" />
       <i data-id="${task.index}" class="fa-solid fa-trash list-icon" id="delete-btn"></i>
     `;
     allList.appendChild(oneTask);
@@ -25,6 +25,17 @@ const ShowList = () => {
       removeList(buttonId);
     });
   });
+  
+  const inputText = document.querySelectorAll('#input-text');
+  inputText.forEach((input) => {
+    input.addEventListener('focusout', () => {
+      const dataSet = parseInt(input.dataset.id, 10);
+      const inputId = tasksArr.findIndex((object) => object.index === dataSet);
+      tasksArr[inputId].description = input.value;
+      editTask();
+    });
+  });
+  console.log(tasksArr);
 };
 
 const addList = () => {
@@ -44,6 +55,12 @@ const removeList = (index) => {
   const jsonData = JSON.stringify(tasksArr);
   localStorage.setItem('lists', jsonData);
 };
+
+const editTask = () => {
+  ShowList();
+  const jsonData = JSON.stringify(tasksArr);
+  localStorage.setItem('lists', jsonData);
+}
 
 const displayList = () => {
   const getJsonData = localStorage.getItem('lists');
