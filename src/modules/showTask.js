@@ -1,6 +1,4 @@
 import { allList, inputList } from './variableList.js';
-// import removeList from './removeList.js';
-// import editTask from './editTask.js';
 
 let tasksArr = [];
 
