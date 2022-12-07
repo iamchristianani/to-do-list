@@ -8,6 +8,10 @@ html {
   box-sizing: inherit;
 }
 
+input {
+  color: gray;
+}
+
 input:focus {
   outline: none;
 }

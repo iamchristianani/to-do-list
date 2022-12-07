@@ -1,6 +1,6 @@
-import { allList, inputList } from "./variableList.js";
-import removeList from './removeList.js';
-import editTask from './editTask.js';
+import { allList, inputList } from './variableList.js';
+// import removeList from './removeList.js';
+// import editTask from './editTask.js';
 
 let tasksArr = [];
 
@@ -17,27 +17,47 @@ const updateList = () => {
     allList.appendChild(oneTask);
     inputList.value = '';
   });
-  
+
   const removeListBtn = document.querySelectorAll('#delete-btn');
   removeListBtn.forEach((button) => {
     button.addEventListener('click', () => {
       const dataSet = parseInt(button.dataset.id, 10);
       const buttonId = tasksArr.findIndex((object) => object.index === dataSet);
-      // eslint-disable-next-line no-use-before-define
+
+      /** REMOVE FUNCTION */
+      const removeList = (index) => {
+        tasksArr.splice(index, 1);
+        for (let i = 0; i < tasksArr.length; i += 1) {
+          tasksArr[i].index = i;
+        }
+        updateList();
+        const jsonData = JSON.stringify(tasksArr);
+        localStorage.setItem('lists', jsonData);
+      };
       removeList(buttonId);
     });
   });
-  
+
   const inputText = document.querySelectorAll('#input-text');
   inputText.forEach((input) => {
     input.addEventListener('focusout', () => {
       const dataSet = parseInt(input.dataset.id, 10);
       const inputId = tasksArr.findIndex((object) => object.index === dataSet);
       tasksArr[inputId].description = input.value;
+
+      /** EDIT FUNCTION */
+      const editTask = () => {
+        updateList();
+        const jsonData = JSON.stringify(tasksArr);
+        localStorage.setItem('lists', jsonData);
+      };
       editTask();
     });
+    input.addEventListener('focusin', () => {
+      input.parentElement.style.backgroundColor = '#fffed7';
+      input.style.backgroundColor = '#fffed7';
+    });
   });
-  console.log(tasksArr);
 };
 
 const displayList = () => {
@@ -48,4 +68,15 @@ const displayList = () => {
   updateList();
 };
 
-export {tasksArr, displayList, updateList};
+const addList = () => {
+  const eachList = {};
+  eachList.description = inputList.value;
+  eachList.completed = false;
+  eachList.index = tasksArr.length;
+  tasksArr.push(eachList);
+  updateList();
+  const jsonData = JSON.stringify(tasksArr);
+  localStorage.setItem('lists', jsonData);
+};
+
+export { displayList, updateList, addList };
