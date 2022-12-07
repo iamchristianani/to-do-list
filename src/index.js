@@ -1,6 +1,7 @@
 import './css/style.css';
 import { inputList } from './modules/variableList.js';
-import {displayList, addList} from './modules/showTask.js';
+import {displayList} from './modules/showTask.js';
+import addList from './modules/addList.js';
 
 window.addEventListener('load', () => {
   displayList();
@@ -9,7 +10,6 @@ window.addEventListener('load', () => {
 inputList.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault;
-    // console.log('Key Pressed')
     addList();
   }
 });

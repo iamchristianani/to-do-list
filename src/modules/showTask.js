@@ -1,8 +1,10 @@
 import { allList, inputList } from "./variableList.js";
+import removeList from './removeList.js';
+import editTask from './editTask.js';
 
 let tasksArr = [];
 
-const ShowList = () => {
+const updateList = () => {
   allList.innerHTML = '';
   tasksArr.forEach((task) => {
     const oneTask = document.createElement('li');
@@ -38,37 +40,12 @@ const ShowList = () => {
   console.log(tasksArr);
 };
 
-const addList = () => {
-  const eachList = {};
-  eachList.description = inputList.value;
-  eachList.completed = false;
-  eachList.index = tasksArr.length;
-  tasksArr.push(eachList);
-  ShowList();
-  const jsonData = JSON.stringify(tasksArr);
-  localStorage.setItem('lists', jsonData);
-}
-
-const removeList = (index) => {
-  tasksArr.splice(index, 1);
-  ShowList();
-  const jsonData = JSON.stringify(tasksArr);
-  localStorage.setItem('lists', jsonData);
-};
-
-const editTask = () => {
-  ShowList();
-  const jsonData = JSON.stringify(tasksArr);
-  localStorage.setItem('lists', jsonData);
-}
-
 const displayList = () => {
   const getJsonData = localStorage.getItem('lists');
-
   if (getJsonData) {
     tasksArr = JSON.parse(getJsonData);
   }
-  ShowList();
+  updateList();
 };
 
-export {displayList, addList};
+export {tasksArr, displayList, updateList};
