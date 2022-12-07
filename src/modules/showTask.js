@@ -28,7 +28,7 @@ const updateList = () => {
       const removeList = (index) => {
         tasksArr.splice(index, 1);
         for (let i = 0; i < tasksArr.length; i += 1) {
-          tasksArr[i].index = i;
+          tasksArr[i].index = i + 1;
         }
         updateList();
         const jsonData = JSON.stringify(tasksArr);
@@ -72,7 +72,7 @@ const addList = () => {
   const eachList = {};
   eachList.description = inputList.value;
   eachList.completed = false;
-  eachList.index = tasksArr.length;
+  eachList.index = tasksArr.length + 1;
   tasksArr.push(eachList);
   updateList();
   const jsonData = JSON.stringify(tasksArr);
