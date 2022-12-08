@@ -60,6 +60,12 @@ section {
 .input-text {
   padding-left: 10px;
   border: none;
+  color: #000;
+}
+
+.input-strike {
+  text-decoration: line-through;
+  color: gray;
 }
 
 .all-list {

@@ -1,14 +1,15 @@
-import { allList, inputList } from './variableList.js';
+import { allList, inputList, clearButton } from './variableList.js';
 
 let tasksArr = [];
 
 const updateList = () => {
+  // ADD LIST
   allList.innerHTML = '';
   tasksArr.forEach((task) => {
     const oneTask = document.createElement('li');
     oneTask.classList = 'each-list all-box';
     oneTask.innerHTML = `
-      <input class="input-check" type="checkbox"/>
+      <input data-id="${task.index}" class="input-check" type="checkbox"/>
       <input data-id="${task.index}" type="text" id="input-text" class="input-text" value="${task.description}" />
       <i data-id="${task.index}" class="fa-solid fa-trash list-icon" id="delete-btn"></i>
     `;
@@ -16,6 +17,7 @@ const updateList = () => {
     inputList.value = '';
   });
 
+  // REMOVE LIST
   const removeListBtn = document.querySelectorAll('#delete-btn');
   removeListBtn.forEach((button) => {
     button.addEventListener('click', () => {
@@ -36,6 +38,7 @@ const updateList = () => {
     });
   });
 
+  // EDIT LIST
   const inputText = document.querySelectorAll('#input-text');
   inputText.forEach((input) => {
     input.addEventListener('focusout', () => {
@@ -56,6 +59,47 @@ const updateList = () => {
       input.style.backgroundColor = '#fffed7';
     });
   });
+
+  // CHECKBOX IN LIST
+  const checkBox = document.querySelectorAll('.input-check');
+  checkBox.forEach((box) => {
+    const dataSet = parseInt(box.dataset.id, 10);
+    const buttonId = tasksArr.findIndex((object) => object.index === dataSet);
+    box.addEventListener('change', () => {
+      box.nextElementSibling.classList.toggle('input-strike');
+
+      /** CHECKBOX FUNCTION */
+      if (box.checked) {
+        tasksArr[buttonId].completed = true;
+      } else {
+        tasksArr[buttonId].completed = false;
+      }
+      const isComplete = () => {
+        const jsonData = JSON.stringify(tasksArr);
+        localStorage.setItem('lists', jsonData);
+        //console.log('clicked');
+      };
+      isComplete();
+    });
+    if (tasksArr[buttonId].completed === true) {
+      box.checked = true;
+      box.nextElementSibling.classList.add('input-strike');
+    }
+  });
+
+  // CLEAR COMPLETED
+  // clearButton.addEventListener('click', () => {
+  //   for (let i = 0; i < tasksArr.length; i += 1) {
+  //     console.log(tasksArr[i].description + ' was clicked');
+  //     if (tasksArr[i].completed === true) {
+  //       const removeCheckedList = () => {
+  //         const index = tasksArr[i].index - 1;
+  //         tasksArr.splice(index, 1);
+  //       }
+  //       removeCheckedList();
+  //     }
+  //   }
+  // });
 };
 
 const displayList = () => {
