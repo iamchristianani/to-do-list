@@ -1,7 +1,20 @@
 import { allList, inputList } from './variableList.js';
-import knowCheckValue from './checkCompleted';
+import knowCheckValue from './checkCompleted.js';
 
 let tasksArr = [];
+
+// Reset The Indexes
+const resetIndex = (arr) => {
+  for (let i = 0; i < arr.length; i += 1) {
+    arr[i].index = i + 1;
+  }
+};
+
+// Save To Local Directory
+const saveToDir = (arr) => {
+  const jsonData = JSON.stringify(arr);
+  localStorage.setItem('lists', jsonData);
+};
 
 /** RENDER FUNCTION */
 const renderDisplay = () => {
@@ -55,7 +68,7 @@ const checkCompleted = (buttonId, box) => {
     box.checked = true;
     box.nextElementSibling.classList.add('input-strike');
   }
-}
+};
 
 /** CLEAR COMPLETED TASK FUNCTION */
 const clearCompleted = () => {
@@ -63,26 +76,13 @@ const clearCompleted = () => {
   renderDisplay();
   resetIndex(tasksArr);
   saveToDir(tasksArr);
-}
+};
 
 // Change Background When Editing
 const changeTaskBg = (input) => {
   input.parentElement.style.backgroundColor = '#fffed7';
   input.style.backgroundColor = '#fffed7';
 };
-
-// Reset The Indexes
-const resetIndex = (arr) => {
-  for (let i = 0; i < arr.length; i += 1) {
-    arr[i].index = i + 1;
-  }
-}
-
-// Save To Local Directory
-const saveToDir = (arr) => {
-  const jsonData = JSON.stringify(arr);
-  localStorage.setItem('lists', jsonData);
-}
 
 // Extract From Local Directory and Display
 const displayList = () => {
@@ -93,10 +93,12 @@ const displayList = () => {
   renderDisplay();
 };
 
-export { displayList, 
-  addList, 
-  removeList, 
-  editTask, 
-  checkCompleted, 
-  changeTaskBg, 
-  clearCompleted };
+export {
+  displayList,
+  addList,
+  removeList,
+  editTask,
+  checkCompleted,
+  changeTaskBg,
+  clearCompleted,
+};
