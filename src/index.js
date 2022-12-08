@@ -3,21 +3,6 @@ import { inputList, clearButton } from './modules/variableList.js';
 import { displayList, addList, removeList, editTask, checkCompleted, changeTaskBg, clearCompleted } from './modules/showTask.js';
 import {allList} from './modules/variableList.js';
 
-const eventFunctions = (e) => {
-  const {target} = e;
-  const parentElement = target.parentNode;
-  if (!parentElement.classList.contains('each-list')) return;
-  const eachListId = Number(parentElement.id);
-  // target the data action
-  const {action} = target.dataset;
-
-  if (action === 'delete') {
-    removeList(eachListId);
-  } else if (action === 'checkbox') {
-    checkCompleted(eachListId, target);
-  }
-}
-
 window.addEventListener('load', () => {
   displayList();
 });
@@ -29,11 +14,31 @@ inputList.addEventListener('keypress', (e) => {
 });
 
 allList.addEventListener('click', (e) => {
-  eventFunctions(e);
+  const {target} = e;
+  const parentElement = target.parentNode;
+  if (!parentElement.classList.contains('each-list')) return;
+  const eachListId = Number(parentElement.id);
+  // target the data action
+  const {action} = target.dataset;
+
+  if (action === 'delete') {
+    removeList(eachListId);
+  }
 });
 
 allList.addEventListener('change', (e) => {
-  eventFunctions(e);
+  const {target} = e;
+  const parentElement = target.parentNode;
+  if (!parentElement.classList.contains('each-list')) return;
+  const eachListId = Number(parentElement.id);
+  // target the data action
+  const {action} = target.dataset;
+
+  if (action === 'checkbox') {
+    checkCompleted(eachListId, target);
+  }
+
+  // eventFunctions(e);
 })
 
 clearButton.addEventListener('click', () => {
@@ -51,7 +56,7 @@ allList.addEventListener('focusout', (e) => {
   if (action === 'edit') {
     editTask(eachListId, target);
   }
-  eventFunctions(e);
+  // eventFunctions(e);
 })
 
 allList.addEventListener('focusin', (e) => {

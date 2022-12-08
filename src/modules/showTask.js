@@ -1,4 +1,4 @@
-import { allList, inputList} from './variableList.js';
+import { allList, inputList, clearButton } from './variableList.js';
 
 let tasksArr = [];
 
