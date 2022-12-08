@@ -1,80 +1,104 @@
 import { allList, inputList } from './variableList.js';
+import knowCheckValue from './checkCompleted.js';
 
 let tasksArr = [];
 
-const updateList = () => {
+// Reset The Indexes
+const resetIndex = (arr) => {
+  for (let i = 0; i < arr.length; i += 1) {
+    arr[i].index = i + 1;
+  }
+};
+
+// Save To Local Directory
+const saveToDir = (arr) => {
+  const jsonData = JSON.stringify(arr);
+  localStorage.setItem('lists', jsonData);
+};
+
+/** RENDER FUNCTION */
+const renderDisplay = () => {
   allList.innerHTML = '';
-  tasksArr.forEach((task) => {
+  tasksArr.forEach((task, index) => {
     const oneTask = document.createElement('li');
     oneTask.classList = 'each-list all-box';
+    oneTask.id = index;
     oneTask.innerHTML = `
-      <input class="input-check" type="checkbox"/>
-      <input data-id="${task.index}" type="text" id="input-text" class="input-text" value="${task.description}" />
-      <i data-id="${task.index}" class="fa-solid fa-trash list-icon" id="delete-btn"></i>
+      <input data-action="checkbox" class="input-check" type="checkbox"/>
+      <input data-action="edit" type="text" id="input-text" class="input-text" value="${task.description}" />
+      <i data-action="delete" class="fa-solid fa-trash list-icon" id="delete-btn"></i>
     `;
     allList.appendChild(oneTask);
     inputList.value = '';
   });
-
-  const removeListBtn = document.querySelectorAll('#delete-btn');
-  removeListBtn.forEach((button) => {
-    button.addEventListener('click', () => {
-      const dataSet = parseInt(button.dataset.id, 10);
-      const buttonId = tasksArr.findIndex((object) => object.index === dataSet);
-
-      /** REMOVE FUNCTION */
-      const removeList = (index) => {
-        tasksArr.splice(index, 1);
-        for (let i = 0; i < tasksArr.length; i += 1) {
-          tasksArr[i].index = i + 1;
-        }
-        updateList();
-        const jsonData = JSON.stringify(tasksArr);
-        localStorage.setItem('lists', jsonData);
-      };
-      removeList(buttonId);
-    });
-  });
-
-  const inputText = document.querySelectorAll('#input-text');
-  inputText.forEach((input) => {
-    input.addEventListener('focusout', () => {
-      const dataSet = parseInt(input.dataset.id, 10);
-      const inputId = tasksArr.findIndex((object) => object.index === dataSet);
-      tasksArr[inputId].description = input.value;
-
-      /** EDIT FUNCTION */
-      const editTask = () => {
-        updateList();
-        const jsonData = JSON.stringify(tasksArr);
-        localStorage.setItem('lists', jsonData);
-      };
-      editTask();
-    });
-    input.addEventListener('focusin', () => {
-      input.parentElement.style.backgroundColor = '#fffed7';
-      input.style.backgroundColor = '#fffed7';
-    });
-  });
 };
 
-const displayList = () => {
-  const getJsonData = localStorage.getItem('lists');
-  if (getJsonData) {
-    tasksArr = JSON.parse(getJsonData);
-  }
-  updateList();
-};
-
+/** ADD NEW TO-DO TASK FUNCTION */
 const addList = () => {
   const eachList = {};
   eachList.description = inputList.value;
   eachList.completed = false;
   eachList.index = tasksArr.length + 1;
   tasksArr.push(eachList);
-  updateList();
-  const jsonData = JSON.stringify(tasksArr);
-  localStorage.setItem('lists', jsonData);
+  renderDisplay();
+  saveToDir(tasksArr);
 };
 
-export { displayList, updateList, addList };
+/** REMOVE TO-DO TASK FUNCTION */
+const removeList = (index) => {
+  tasksArr.splice(index, 1);
+  resetIndex(tasksArr);
+  renderDisplay();
+  saveToDir(tasksArr);
+};
+
+/** EDIT TO-DO TASK FUNCTION */
+const editTask = (inputId, input) => {
+  tasksArr[inputId].description = input.value;
+  renderDisplay();
+  saveToDir(tasksArr);
+};
+
+/** CHECKBOX FUNCTION */
+const checkCompleted = (buttonId, box) => {
+  box.nextElementSibling.classList.toggle('input-strike');
+  tasksArr[buttonId].completed = knowCheckValue(box);
+  saveToDir(tasksArr);
+  if (tasksArr[buttonId].completed === true) {
+    box.checked = true;
+    box.nextElementSibling.classList.add('input-strike');
+  }
+};
+
+/** CLEAR COMPLETED TASK FUNCTION */
+const clearCompleted = () => {
+  tasksArr = tasksArr.filter((obj) => obj.completed !== true);
+  renderDisplay();
+  resetIndex(tasksArr);
+  saveToDir(tasksArr);
+};
+
+// Change Background When Editing
+const changeTaskBg = (input) => {
+  input.parentElement.style.backgroundColor = '#fffed7';
+  input.style.backgroundColor = '#fffed7';
+};
+
+// Extract From Local Directory and Display
+const displayList = () => {
+  const getJsonData = localStorage.getItem('lists');
+  if (getJsonData) {
+    tasksArr = JSON.parse(getJsonData);
+  }
+  renderDisplay();
+};
+
+export {
+  displayList,
+  addList,
+  removeList,
+  editTask,
+  checkCompleted,
+  changeTaskBg,
+  clearCompleted,
+};
