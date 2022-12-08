@@ -61,6 +61,7 @@ section {
   padding-left: 10px;
   border: none;
   color: #000;
+  width: 80%;
 }
 
 .input-strike {
@@ -86,6 +87,20 @@ section {
   border: none;
   font-size: 17px;
   color: gray;
+  display: flex;
+  justify-content: center;
+}
+
+.clear-btn-text {
+  padding: 0;
+  margin: 0;
+  font-weight: 100;
+  color: gray;
+}
+
+.clear-btn-text:hover {
+  text-decoration: underline;
+  color: black;
 }
 
 .clear-text {

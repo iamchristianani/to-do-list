@@ -1,7 +1,14 @@
 import './css/style.css';
 import { inputList, clearButton } from './modules/variableList.js';
-import { displayList, addList, removeList, editTask, checkCompleted, changeTaskBg, clearCompleted } from './modules/showTask.js';
+import { displayList, 
+  addList, 
+  removeList, 
+  editTask, 
+  checkCompleted, 
+  changeTaskBg, 
+  clearCompleted } from './modules/showTask.js';
 import {allList} from './modules/variableList.js';
+import knowCheckValue from './modules/checkCompleted.js';
 
 window.addEventListener('load', () => {
   displayList();
@@ -36,9 +43,8 @@ allList.addEventListener('change', (e) => {
 
   if (action === 'checkbox') {
     checkCompleted(eachListId, target);
+    knowCheckValue(target);
   }
-
-  // eventFunctions(e);
 })
 
 clearButton.addEventListener('click', () => {
@@ -56,19 +62,16 @@ allList.addEventListener('focusout', (e) => {
   if (action === 'edit') {
     editTask(eachListId, target);
   }
-  // eventFunctions(e);
 })
 
 allList.addEventListener('focusin', (e) => {
   const {target} = e;
   const parentElement = target.parentNode;
   if (!parentElement.classList.contains('each-list')) return;
-  const eachListId = Number(parentElement.id);
 
   // target the data action
   const {action} = target.dataset;
   if (action === 'edit') {
     changeTaskBg(target);
   }
-  // eventFunctions(e);
 })
